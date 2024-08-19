@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academiccrpro - Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: white;
+        }
+
+        .Container {
+            text-align: center;
+            justify-content: center;
+            border: 3px solid whitesmoke;
+            width: 50%;
+            height: 500px;
+            position: relative;
+            left: 260px;
+            top: 20px;
+        }
+
+        .final {
+            text-align: center;
+            justify-content: center;
+            color: #030303;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .signup {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+        }
+
+        .footer {
+            color: #030303;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .registration {
+            font-size: 32px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .fullName {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        .email {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        .Username {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        .password {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        .confirmpassword {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        .Type {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        #student {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        #advisor {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        #parents {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Container">
+        <div class="registration">Sign Up</div><br>
+        <div class="fullName">
+            <label for="full name">FullName </label><br>
+            <input type="text" id="full name" required>
+        </div>
+        <div class="email">
+            <label for="email">Email </label><br>
+            <input type="email" id="email" required>
+        </div>
+        <div class="Username">
+            <label for="Username">Username </label><br>
+            <input type="username" id="Username" required>
+        </div>
+        <div class="password">
+            <label for="Password">Password </label><br>
+            <input type="password" id="password" required>
+        </div>
+        <div class="confirmpassword">
+            <label for="confirmpassword">Confirm Password </label><br>
+            <input type="password" id="confirmpassword" required>
+        </div>
+        <div class="Type">
+            <label for="User-Type">User Type</label><br>
+
+            <label for="student">Student </label>
+            <input type="radio" id="student" value="student" name="User-Type">
+            <label for="advisor">Advisor </label>
+            <input type="radio" id="advisor" value="advisor" name="User-Type">
+            <label for="parents">Parent </label>
+            <input type="radio" id="parents" value="parents" name="User-Type">
+        </div><br>
+        <div class="signup">
+            <button style="width: 220px; color: white; background-color: black;">Sign Up</button>
+        </div>
+
+    </div><br><br>
+    <hr>
+
+    <div class="final">
+        <a href="Home.html">Home</a>
+        <a href="settings.html">Settings</a>
+        <a href="Privacy.html">Privacy Policy</a>
+        <hr>
+
+        <footer>
+            &copy; 2024 Education LMS. All Rights Reserved.
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const userType = document.querySelector('input[name="userType"]:checked').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match. Please confirm your password.');
+                return;
+            }
+
+            const data = {
+                fullName,
+                email,
+                username,
+                password,
+                userType
+            };
+
+            fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Registration successful!');
+                    window.location.href = '/login.html'; // Redirect to login page after successful registration
+                } else {
+                    return response.json().then(error => {
+                        throw new Error(error.message);
+                    });
+                }
+            })
+            .catch(error => {
+                alert(`Error: ${error.message}`);
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

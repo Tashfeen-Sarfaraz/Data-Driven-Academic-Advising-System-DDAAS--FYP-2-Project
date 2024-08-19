@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Advisor Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-lg">
+        <h1 class="text-2xl font-bold mb-4">Module Advisor Dashboard</h1>
+        <div class="sidebar col-span-1">
+            <h3>Quick Actions</h3>
+            <ul>
+                <li id="careerGuidance" href="careerguide">Career Guidance Support</li>
+                <li id="assignmentFeedback" href="assignments" >Assignment and Assessment Feedback</li>
+                <li id="communicationCenter" href="communation">Communication Center</li>
+                <li id="notifications" href="notification">Notifications</li>
+            </ul>
+        </div>
+        
+        <!-- Assignment List -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">Assignments</h2>
+            <ul class="bg-gray-50 p-4 rounded-lg space-y-4">
+                <li class="p-4 bg-white shadow rounded-md">
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">Assignment 1: Calculus Project</span>
+                        <button onclick="showAssignmentDetails('Calculus Project')" class="text-blue-500 hover:underline">View Details</button>
+                    </div>
+                </li>
+                <li class="p-4 bg-white shadow rounded-md">
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">Assignment 2: Physics Report</span>
+                        <button onclick="showAssignmentDetails('Physics Report')" class="text-blue-500 hover:underline">View Details</button>
+                    </div>
+                </li>
+                <!-- Add more assignments as needed -->
+            </ul>
+        </div>
+
+        <!-- Assignment Details & Feedback Form -->
+        <div id="assignmentDetails" class="hidden bg-gray-50 p-4 rounded-lg">
+            <h2 class="text-xl font-semibold mb-2">Assignment Details</h2>
+            <div id="assignmentTitle" class="font-medium mb-4">Assignment Title</div>
+            <p id="assignmentDescription" class="text-gray-700 mb-4">
+                Detailed description of the assignment goes here. Advisors can use this section to understand the context of the submission.
+            </p>
+
+            <h3 class="text-lg font-semibold mb-2">Provide Feedback</h3>
+            <form id="feedbackForm" onsubmit="submitFeedback(event)">
+                <div class="mb-4">
+                    <label for="feedback" class="block text-sm font-medium text-gray-700 mb-1">Feedback</label>
+                    <textarea id="feedback" rows="4" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="grade" class="block text-sm font-medium text-gray-700 mb-1">Grade</label>
+                    <input type="text" id="grade" class="w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., A, B+, 85%">
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit Feedback</button>
+                <button type="button" onclick="hideAssignmentDetails()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 ml-2">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to show assignment details
+        function showAssignmentDetails(title) {
+            document.getElementById('assignmentDetails').classList.remove('hidden');
+            document.getElementById('assignmentTitle').textContent = title;
+            document.getElementById('assignmentDescription').textContent = "This is a placeholder description for " + title + ".";
+        }
+
+        // Function to hide assignment details
+        function hideAssignmentDetails() {
+            document.getElementById('assignmentDetails').classList.add('hidden');
+        }
+
+        // Function to submit feedback
+        function submitFeedback(event) {
+            event.preventDefault();
+            const feedback = document.getElementById('feedback').value;
+            const grade = document.getElementById('grade').value;
+            alert(`Feedback Submitted:\nFeedback: ${feedback}\nGrade: ${grade}`);
+            hideAssignmentDetails();
+            document.getElementById('feedbackForm').reset();
+        }
+    </script>
+</body>
+</html>

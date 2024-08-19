@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Settings - Multi-Language & Privacy Controls</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .custom-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .form-control {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background-color: #d1d5db;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.active {
+            background-color: #3b82f6;
+        }
+
+        .toggle-switch.active::before {
+            transform: translateX(20px);
+        }
+
+        .privacy-section {
+            margin-bottom: 20px;
+        }
+
+        .privacy-section h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .privacy-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .privacy-option label {
+            margin-left: 8px;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: #9ca3af;
+            color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Module Settings</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Multi-Language Support -->
+            <div class="custom-card">
+                <h2 class="card-title">Language Support</h2>
+                <div class="form-control">
+                    <label for="language" class="form-label">Select Language</label>
+                    <select id="language" class="form-select">
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <div class="form-control">
+                    <button id="saveLanguage" class="btn-primary w-full">Save Language Preference</button>
+                </div>
+            </div>
+            <!-- Security and Privacy Controls -->
+            <div class="custom-card">
+                <h2 class="card-title">Security and Privacy Controls</h2>
+                <div class="privacy-section">
+                    <h3>Students</h3>
+                    <div class="privacy-option">
+                        <div id="studentPrivacyToggle" class="toggle-switch"></div>
+                        <label for="studentPrivacyToggle">Allow Profile Visibility</label>
+                    </div>
+                    <div class="privacy-option">
+                        <div id="studentDataToggle" class="toggle-switch"></div>
+                        <label for="studentDataToggle">Share Academic Data</label>
+                    </div>
+                </div>
+                <div class="privacy-section">
+                    <h3>Advisors</h3>
+                    <div class="privacy-option">
+                        <div id="advisorPrivacyToggle" class="toggle-switch"></div>
+                        <label for="advisorPrivacyToggle">Allow Profile Visibility</label>
+                    </div>
+                    <div class="privacy-option">
+                        <div id="advisorDataToggle" class="toggle-switch"></div>
+                        <label for="advisorDataToggle">Share Advisory Data</label>
+                    </div>
+                </div>
+                <div class="privacy-section">
+                    <h3>Parents</h3>
+                    <div class="privacy-option">
+                        <div id="parentPrivacyToggle" class="toggle-switch"></div>
+                        <label for="parentPrivacyToggle">Allow Profile Visibility</label>
+                    </div>
+                    <div class="privacy-option">
+                        <div id="parentDataToggle" class="toggle-switch"></div>
+                        <label for="parentDataToggle">Share Child's Academic Data</label>
+                    </div>
+                </div>
+                <div class="form-control">
+                    <button id="savePrivacy" class="btn-primary w-full">Save Privacy Preferences</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const toggles = document.querySelectorAll('.toggle-switch');
+
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('active');
+            });
+        });
+
+        document.getElementById('saveLanguage').addEventListener('click', () => {
+            alert('Language preference saved successfully!');
+        });
+
+        document.getElementById('savePrivacy').addEventListener('click', () => {
+            const privacySettings = {
+                student: {
+                    allowProfileVisibility: document.getElementById('studentPrivacyToggle').classList.contains('active'),
+                    shareAcademicData: document.getElementById('studentDataToggle').classList.contains('active'),
+                },
+                advisor: {
+                    allowProfileVisibility: document.getElementById('advisorPrivacyToggle').classList.contains('active'),
+                    shareAdvisoryData: document.getElementById('advisorDataToggle').classList.contains('active'),
+                },
+                parent: {
+                    allowProfileVisibility: document.getElementById('parentPrivacyToggle').classList.contains('active'),
+                    shareChildAcademicData: document.getElementById('parentDataToggle').classList.contains('active'),
+                },
+            };
+
+            console.log('Privacy Settings:', privacySettings);
+            alert('Privacy preferences saved successfully!');
+        });
+    </script>
+</body>
+
+</html>

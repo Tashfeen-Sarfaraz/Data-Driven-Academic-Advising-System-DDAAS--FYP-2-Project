@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Advisor Dashboard - Career Guidance Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-lg">
+        <h1 class="text-2xl font-bold mb-4">Career Guidance Support</h1>
+        <div class="sidebar col-span-1">
+            <h3>Quick Actions</h3>
+            <ul>
+                <li id="careerGuidance" href="careerguide">Career Guidance Support</li>
+                <li id="assignmentFeedback" href="assignments" >Assignment and Assessment Feedback</li>
+                <li id="communicationCenter" href="communation">Communication Center</li>
+                <li id="notifications" href="notification">Notifications</li>
+            </ul>
+        </div>
+        <!-- Student Selection -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">Select Student</h2>
+            <select id="studentSelect" class="w-full p-2 border border-gray-300 rounded-md" onchange="showRecommendations()">
+                <option value="">-- Select a Student --</option>
+                <option value="cs">John Doe - Computer Science</option>
+                <option value="biology">Jane Smith - Biology</option>
+                <option value="business">Michael Brown - Business</option>
+                <!-- Add more students and their departments -->
+            </select>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div id="recommendations" class="hidden bg-gray-50 p-4 rounded-lg">
+            <h2 class="text-xl font-semibold mb-2">Career Recommendations</h2>
+            <div id="csRecommendations" class="hidden">
+                <h3 class="text-lg font-medium mb-1">Computer Science</h3>
+                <ul class="list-disc pl-5 text-gray-700">
+                    <li>Pursue further studies in AI, Data Science, or Cybersecurity.</li>
+                    <li>Consider internships at tech companies like Google or Microsoft.</li>
+                    <li>Explore roles in software development, network engineering, or data analysis.</li>
+                </ul>
+            </div>
+            <div id="biologyRecommendations" class="hidden">
+                <h3 class="text-lg font-medium mb-1">Biology</h3>
+                <ul class="list-disc pl-5 text-gray-700">
+                    <li>Consider a Master's in Genetics or Marine Biology.</li>
+                    <li>Intern with research labs or environmental agencies.</li>
+                    <li>Explore careers in biotechnology, research, or conservation.</li>
+                </ul>
+            </div>
+            <div id="businessRecommendations" class="hidden">
+                <h3 class="text-lg font-medium mb-1">Business</h3>
+                <ul class="list-disc pl-5 text-gray-700">
+                    <li>Pursue an MBA specializing in Finance or Marketing.</li>
+                    <li>Intern with consulting firms or financial institutions.</li>
+                    <li>Explore roles in management consulting, financial analysis, or marketing.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to show career recommendations based on the selected student
+        function showRecommendations() {
+            const studentSelect = document.getElementById('studentSelect');
+            const selectedValue = studentSelect.value;
+            const recommendations = document.getElementById('recommendations');
+
+            // Hide all recommendations first
+            document.querySelectorAll('#recommendations > div').forEach(div => div.classList.add('hidden'));
+
+            // Show the recommendations based on the selected student's department
+            if (selectedValue) {
+                document.getElementById(`${selectedValue}Recommendations`).classList.remove('hidden');
+                recommendations.classList.remove('hidden');
+            } else {
+                recommendations.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

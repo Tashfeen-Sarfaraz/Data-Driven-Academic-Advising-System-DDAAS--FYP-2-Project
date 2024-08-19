@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Parent Dashboard</h1>
+
+    <!-- Restricted Student Profile View -->
+    <div class="section">
+        <h2>Restricted Student Profile View:</h2>
+        <div>
+            <label for="student-name">Student Name:</label>
+            <p id="student-name">John Doe</p>
+        </div>
+        <div>
+            <label for="grade-level">Grade Level:</label>
+            <p id="grade-level">5th Grade</p>
+        </div>
+        <div>
+            <label for="recent-courses">Recent Courses Enrolled:</label>
+            <ul id="recent-courses">
+                <li>Mathematics</li>
+                <li>Science</li>
+                <li>English</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Updates Section -->
+    <div class="section">
+        <h2>Updates Section:</h2>
+        <div>
+            <h3>Upcoming Assignments:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Assignment Title</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>Algebra Quiz</td>
+                        <td>May 5, 2024</td>
+                    </tr>
+                    <!-- Add more assignment rows as needed -->
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Recent Announcements:</h3>
+            <ul id="recent-announcements">
+                <li><strong>Important:</strong> Parent-Teacher Conference on May 10th, 2024</li>
+                <li><strong>Note:</strong> No school on May 28th, 2024 (Memorial Day)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Communication Module -->
+    <div class="section">
+        <h2>Communication Module:</h2>
+        <form id="send-message-form">
+            <label for="recipient-teacher">Send Message to Teacher:</label>
+            <input type="text" id="recipient-teacher" placeholder="Recipient Teacher">
+            <input type="text" id="subject" placeholder="Subject">
+            <textarea id="message" placeholder="Message"></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <div>
+            <h3>Message History:</h3>
+            <ul id="message-history">
+                <li><strong>To:</strong> Ms. Smith | <strong>Subject:</strong> Regarding Math Homework | <strong>Date:</strong> April 25, 2024</li>
+                <li><strong>From:</strong> Mr. Johnson | <strong>Subject:</strong> Parent-Teacher Conference | <strong>Date:</strong> April 20, 2024</li>
+                <!-- Add more message history items as needed -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch student information and communication history on page load
+            fetchStudentInfo();
+            fetchCommunicationHistory();
+    
+            // Function to fetch student information
+            function fetchStudentInfo() {
+                fetch('/api/student-info', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('student-name').textContent = data.name;
+                    document.getElementById('grade-level').textContent = data.grade;
+                    const coursesList = document.getElementById('recent-courses');
+                    data.courses.forEach(course => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = course;
+                        coursesList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching student info:', error));
+            }
+    
+            // Function to fetch communication history
+            function fetchCommunicationHistory() {
+                fetch('/api/communication-history', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const messageHistory = document.getElementById('message-history');
+                    data.forEach(message => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `<strong>To:</strong> ${message.recipient} | <strong>Subject:</strong> ${message.subject} | <strong>Date:</strong> ${new Date(message.date).toLocaleDateString()}`;
+                        messageHistory.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching communication history:', error));
+            }
+    
+            // Function to handle the "Send Message" form submission
+            document.getElementById('send-message-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form from submitting the traditional way
+    
+                // Get input values
+                const recipientTeacher = document.getElementById('recipient-teacher').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+    
+                // Check if all fields are filled
+                if (recipientTeacher && subject && message) {
+                    // Send the message to the backend
+                    fetch('/api/send-message', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            recipient: recipientTeacher,
+                            subject: subject,
+                            message: message
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        // Update message history with the new message
+                        const messageHistory = document.getElementById('message-history');
+                        const newMessage = document.createElement('li');
+                        const currentDate = new Date().toLocaleDateString();
+                        
+                        newMessage.innerHTML = `<strong>To:</strong> ${recipientTeacher} | <strong>Subject:</strong> ${subject} | <strong>Date:</strong> ${currentDate}`;
+                        messageHistory.appendChild(newMessage);
+    
+                        // Clear form inputs
+                        document.getElementById('send-message-form').reset();
+    
+                        // Display a success message
+                        alert('Message sent successfully!');
+                    })
+                    .catch(error => console.error('Error sending message:', error));
+                } else {
+                    alert('Please fill out all fields before sending the message.');
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

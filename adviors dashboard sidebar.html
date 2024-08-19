@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Advisor Dashboard - Learning Pathways</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .pathway-added {
+            display: none;
+            background-color: #e6fffa;
+            color: #319795;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .feedback-confirmation {
+            display: none;
+            background-color: #f0fff4;
+            color: #38a169;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: black;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 100%;
+        }
+
+        .sidebar h3 {
+            color: whitesmoke;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 3rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            background-color: #f9fafb;;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-6">Module Advisor Dashboard</h1>
+        <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <!-- Sidebar -->
+            <div class="sidebar col-span-1">
+                <h3>Quick Actions</h3>
+                <ul>
+                    <li id="careerGuidance">Career Guidance Support</li>
+                    <li id="assignmentFeedback">Assignment and Assessment Feedback</li>
+                    <li id="communicationCenter">Communication Center</li>
+                    <li id="notifications">Notifications</li>
+                </ul>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-span-1 md:col-span-3 lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dashboard Overview -->
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h2 class="text-xl font-semibold mb-4">Dashboard Overview</h2>
+                    <p class="text-gray-700">Quick snapshot of student's progress, suggested pathways, and alerts.</p>
+                </div>
+                <!-- Student Progress Tracker -->
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h2 class="text-xl font-semibold mb-4">Student Progress Tracker</h2>
+                    <div class="w-full bg-gray-200 rounded-full h-6 mb-4">
+                        <div class="bg-blue-500 h-6 rounded-full text-center text-white" style="width: 70%;">70%</div>
+                    </div>
+                    <p class="text-gray-700">Current progress and milestones achieved by the student.</p>
+                </div>
+                <!-- Course Recommendations -->
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h2 class="text-xl font-semibold mb-4">Course Recommendations</h2>
+                    <p class="text-gray-700">Suggested courses based on student's academic history and goals.</p>
+                    <ul class="list-disc ml-6 text-gray-700">
+                        <li>Advanced Mathematics</li>
+                        <li>Computer Science Principles</li>
+                        <li>Introduction to Psychology</li>
+                    </ul>
+                </div>
+                <!-- Learning Pathways -->
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h2 class="text-xl font-semibold mb-4">Learning Pathways</h2>
+                    <p class="text-gray-700">Guided flow of courses designed to help students reach their academic goals.</p>
+                    <button id="createPathway" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">Create Pathway</button>
+                    <div id="pathwayAdded" class="pathway-added">New learning pathway added!</div>
+                </div>
+                <!-- Feedback & Guidance Section -->
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <h2 class="text-xl font-semibold mb-4">Feedback & Guidance</h2>
+                    <textarea id="feedbackText" class="w-full p-2 border rounded" rows="4" placeholder="Provide personalized feedback..."></textarea>
+                    <button id="submitFeedback" class="bg-green-500 text-white py-2 px-4 rounded mt-4">Submit Feedback</button>
+                    <div id="feedbackConfirmation" class="feedback-confirmation">Feedback submitted successfully!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Event Listeners for Sidebar Actions
+        document.getElementById('careerGuidance').addEventListener('click', function() {
+            alert('Career Guidance Support: Provide Recommendations');
+        });
+
+        document.getElementById('assignmentFeedback').addEventListener('click', function() {
+            alert('Assignment and Assessment Feedback: Provide timely feedback');
+        });
+
+        document.getElementById('communicationCenter').addEventListener('click', function() {
+            alert('Communication Center: Message Students, Provide Feedback');
+        });
+
+        document.getElementById('notifications').addEventListener('click', function() {
+            alert('Notifications: Receive and Manage');
+        });
+
+        // Existing Functionality
+        document.getElementById('createPathway').addEventListener('click', function() {
+            document.getElementById('pathwayAdded').style.display = 'block';
+        });
+
+        document.getElementById('submitFeedback').addEventListener('click', function() {
+            const feedback = document.getElementById('feedbackText').value;
+            if (feedback.trim()) {
+                document.getElementById('feedbackConfirmation').style.display = 'block';
+                document.getElementById('feedbackText').value = ''; // Clear the textarea
+            }
+        });
+    </script>
+</body>
+
+</html>

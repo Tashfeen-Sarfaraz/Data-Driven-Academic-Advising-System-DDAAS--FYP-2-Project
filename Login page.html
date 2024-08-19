@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: white;
+        }
+
+        .Container1 {
+            text-align: center;
+            justify-content: center;
+            border: 3px solid whitesmoke;
+            width: 50%;
+            height: 400px;
+            position: relative;
+            left: 260px;
+            top: 20px;
+        }
+
+        .Forgot {
+            text-align: center;
+            justify-content: center;
+        }
+
+        .Check {
+            text-align: center;
+            justify-content: center;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        .final1 {
+            text-align: center;
+            justify-content: center;
+            color: #030303;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .Login {
+            font-size: 32px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #f1 {
+            color: #030303;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .log {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+        }
+
+        .EmailAddress {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+
+        .Verify {
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #030303;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Container1">
+        <div class="Login">Sign In</div><br>
+        <form id="loginForm">
+            <div class="EmailAddress">
+                <label for="userName">Username/Email Address</label><br>
+                <input type="email" id="userName" name="username" required>
+            </div><br>
+
+            <div class="Verify">
+                <label for="password1">Password</label><br>
+                <input type="password" id="password1" name="password" required>
+            </div><br>
+
+            <div class="Check">
+                <label for="remember">Remember Me</label>
+                <input type="checkbox" id="remember" value="remember" name="remember">
+            </div><br>
+
+            <div class="Forgot">
+                <a href="Forgot password.html">Forgot Password?</a>
+            </div><br>
+
+            <div class="log">
+                <button type="submit" style="width: 220px; color: white; background-color: black;">Login</button><br>
+            </div>
+        </form>
+    </div><br><br>
+    <hr>
+
+    <div class="final1">
+        <a href="Privacy.html">Terms of Service</a>
+        <a href="Service.html">Privacy Policy</a>
+        <a href="settings.html">Settings</a>
+        <hr>
+
+        <footer id="f1">
+            &copy; 2024 Education LMS. All Rights Reserved.
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('userName').value;
+            const password = document.getElementById('password1').value;
+            const remember = document.getElementById('remember').checked;
+
+            if (username === '') {
+                alert('Please enter your username or email address.');
+                return;
+            }
+
+            if (password === '') {
+                alert('Please enter your password.');
+                return;
+            }
+
+            const data = {
+                username,
+                password,
+                remember
+            };
+
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Login successful!');
+                    window.location.href = '/dashboard.html'; // Redirect to a dashboard or homepage after login
+                } else {
+                    return response.json().then(error => {
+                        throw new Error(error.message);
+                    });
+                }
+            })
+            .catch(error => {
+                alert(`Error: ${error.message}`);
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
