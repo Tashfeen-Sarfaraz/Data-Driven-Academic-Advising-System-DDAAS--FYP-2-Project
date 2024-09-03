@@ -1,0 +1,481 @@
+Pyhton django for User Authentication:
+
+Create a Django Project:
+
+django-admin startproject academiccrpro
+cd academiccrpro
+
+Create a Django App:
+python manage.py startapp home
+
+Add home to INSTALLED_APPS in academiccrpro/settings.py:
+INSTALLED_APPS = [
+    ...
+    'home',
+    ...
+]
+
+Define the models for Student, Parent, and Advisor in accounts/models.py
+
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import User, Student, Parent, Advisor
+
+class RegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['email', 'full_name', 'user_type', 'password1', 'password2']
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['date_of_birth']
+
+class ParentForm(forms.ModelForm):
+    class Meta:
+        model = Parent
+        fields = []
+
+class AdvisorForm(forms.ModelForm):
+    class Meta:
+        model = Advisor
+        fields = ['specialization', 'experience']
+
+Create Views in accounts/views.py:
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from .forms import RegistrationForm, StudentForm, ParentForm, AdvisorForm
+from .models import User
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user_type = form.cleaned_data.get('user_type')
+            if user_type == 'student':
+                student_form = StudentForm(request.POST)
+                if student_form.is_valid():
+                    student = student_form.save(commit=False)
+                    student.user = user
+                    student.save()
+            elif user_type == 'parent':
+                parent_form = ParentForm(request.POST)
+                if parent_form.is_valid():
+                    parent = parent_form.save(commit=False)
+                    parent.user = user
+                    parent.save()
+            elif user_type == 'advisor':
+                advisor_form = AdvisorForm(request.POST)
+                if advisor_form.is_valid():
+                    advisor = advisor_form.save(commit=False)
+                    advisor.user = user
+                    advisor.save()
+            return redirect('login')
+    else:
+        form = RegistrationForm()
+    return render(request, 'accounts/register.html', {'form': form})
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from .forms import RegistrationForm, StudentForm, ParentForm, AdvisorForm
+from .models import User
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user_type = form.cleaned_data.get('user_type')
+            if user_type == 'student':
+                student_form = StudentForm(request.POST)
+                if student_form.is_valid():
+                    student = student_form.save(commit=False)
+                    student.user = user
+                    student.save()
+            elif user_type == 'parent':
+                parent_form = ParentForm(request.POST)
+                if parent_form.is_valid():
+                    parent = parent_form.save(commit=False)
+                    parent.user = user
+                    parent.save()
+            elif user_type == 'advisor':
+                advisor_form = AdvisorForm(request.POST)
+                if advisor_form.is_valid():
+                    advisor = advisor_form.save(commit=False)
+                    advisor.user = user
+                    advisor.save()
+            return redirect('login')
+    else:
+        form = RegistrationForm()
+    return render(request, 'accounts/register.html', {'form': form})
+
+accounts/urls.py:
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('register/', views.register, name='register'),
+]
+
+academiccrpro/urls.py:
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
+]
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
+]
+
+register.html in accounts/templates/accounts:
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Register</h2>
+  <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Register</button>
+  </form>
+{% endblock %}
+
+
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+
+class CustomLoginView(LoginView):
+    template_name = 'accounts/login.html'
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'
+
+accounts/urls.py:
+
+from django.contrib.auth import views as auth_views
+
+urlpatterns += [
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('password-reset/', CustomPasswordResetView.as_view(), name='password_reset'),
+    path('password-reset/done/', CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
+]
+
+Update the academiccrpro/settings.py to specify custom user model:
+AUTH_USER_MODEL = 'accounts.User'
+python manage.py makemigrations accounts
+python manage.py migrate
+
+Finally, run the server and test the functionality:
+
+python manage.py runserver
+
+django for Home:
+
+---->django-admin startproject academiccrpro
+----->cd academiccrpro
+
+python manage.py startapp home
+
+INSTALLED_APPS in academiccrpro/settings.py
+
+INSTALLED_APPS = [
+    ...
+    'home',
+    ...
+]
+
+Create a Form in home/forms.py:
+
+from django import forms
+
+class ContactForm(forms.Form):
+    full_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Full Name'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+    message = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Your Message Here'}))
+
+Create Views in home/views.py:
+
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.contrib import messages
+from .forms import ContactForm
+
+def home_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data['full_name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            # Simulate sending email using Django's send_mail function
+            send_mail(
+                f'Contact Us Message from {full_name}',
+                message,
+                email,
+                ['your-email@example.com'],  # Replace with your email address
+            )
+
+            messages.success(request, 'Message sent successfully!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = ContactForm()
+
+    return render(request, 'home/index.html', {'form': form})
+
+ academiccrpro/urls.py to Include the Home App URLs:
+
+from django.contrib import admin
+from django.urls import path, include
+from home.views import home_view
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', home_view, name='home'),
+]
+
+Create Templates for the Home Page
+home/
+├── templates/
+│   └── home/
+│       └── index.html
+
+
+index.html Template:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academiacrpro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        /* Add your existing CSS here */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Academiacrpro</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="nav justify-content-center">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link" href="#">Student Dashboard</a>
+                    <a class="nav-link" href="#">Advisor Dashboard</a>
+                    <a class="nav-link" href="#">Parent Dashboard</a>
+                    <a class="nav-link" href="#">Settings</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <button id="bt1"
+        style="width: 100px; color: white; background-color: black;">Login</button>
+    <button id="bt2"
+        style="width: 100px; color: white; background-color: black;">Register</button>
+    <hr>
+
+    <h1 id="head">Welcome to Our Learning Platform</h1>
+    <p id="para">Empowering Your Learning Journey</p>
+    <video controls autoplay width="1265" height="500">
+        <source src="Videos/Educational Video.mp4">
+    </video>
+
+    <p id="text">Discover the benefits of our platform</p>
+
+    <h2 id="head1">Browse Courses</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Add your course cards here -->
+        </div>
+    </div>
+
+    <h3 id="popular">Popular Courses</h3>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Add your popular course cards here -->
+        </div>
+    </div>
+
+    <div id="Platform">
+        <h3 id="head2">About Us</h3>
+        <!-- Add your platform info here -->
+    </div>
+
+    <div class="contactpage">
+        <h3>Contact Us</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" id="sendMessage">Send</button>
+        </form>
+    </div>
+
+    <footer id="foote">
+        &copy; 2024 Education LMS. All Rights Reserved.
+    </footer>
+
+    <script>
+        document.getElementById('bt1').addEventListener('click', function () {
+            window.location.href = '{% url "login" %}';
+        });
+
+        document.getElementById('bt2').addEventListener('click', function () {
+            window.location.href = '{% url "register" %}';
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+python manage.py makemigrations
+python manage.py migrate
+
+Run the Development Server:
+python manage.py runserver
+
+Test the Application:
+
+Visit the homepage at http://127.0.0.1:8000/.
+Test the "Contact Us" form by filling it out and submitting it. You should see a success message and receive the email 
+check the backend
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.your-email-provider.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@example.com'
+EMAIL_HOST_PASSWORD = 'your-email-password'
+
+
+Pyhton django for Parent Dashboard:
+
+django-admin startproject parent_dashboard
+cd parent_dashboard
+python manage.py startapp dashboard
+INSTALLED_APPS in settings.py
+
+Set the models:
+
+from django.db import models
+
+class Parent(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255)
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    grade_level = models.CharField(max_length=50)
+
+class LinkedStudent(models.Model):
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+
+class Advisor(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+
+class CommunicationHistory(models.Model):
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    advisor = models.ForeignKey(Advisor, on_delete=models.CASCADE)
+    communication_date = models.DateTimeField(auto_now_add=True)
+    message = models.TextField()
+
+
+Run Models:
+python manage.py makemigrations
+python manage.py migrate
+
+Views and APIs:
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse, HttpResponse
+from .models import Parent, LinkedStudent, CommunicationHistory, Advisor, Student
+
+def fetch_student_info(request):
+    # Assuming parent is logged in
+    parent = get_object_or_404(Parent, id=request.user.id)
+    linked_student = LinkedStudent.objects.filter(parent=parent).select_related('student')
+
+    data = {
+        'name': linked_student.student.name,
+        'grade': linked_student.student.grade_level,
+        'courses': ["Mathematics", "Science", "English"],  # Assuming courses are hard-coded
+    }
+    return JsonResponse(data)
+
+def fetch_communication_history(request):
+    parent = get_object_or_404(Parent, id=request.user.id)
+    communications = CommunicationHistory.objects.filter(parent=parent).select_related('advisor')
+
+    data = []
+    for comm in communications:
+        data.append({
+            'recipient': comm.advisor.name,
+            'subject': comm.message[:50],  # Assume subject is first 50 chars of the message
+            'date': comm.communication_date,
+        })
+
+    return JsonResponse(data, safe=False)
+
+def send_message(request):
+    if request.method == 'POST':
+        parent = get_object_or_404(Parent, id=request.user.id)
+        advisor_name = request.POST.get('recipient')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        advisor = get_object_or_404(Advisor, name=advisor_name)
+
+        CommunicationHistory.objects.create(
+            parent=parent,
+            advisor=advisor,
+            message=message
+        )
+
+        return HttpResponse('Message sent successfully!')
+    return HttpResponse('Invalid request', status=400)
+
+
+Update urls.py to include the new views:
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('api/student-info/', views.fetch_student_info, name='fetch_student_info'),
+    path('api/communication-history/', views.fetch_communication_history, name='fetch_communication_history'),
+    path('api/send-message/', views.send_message, name='send_message'),
+]
+
+
+
+
