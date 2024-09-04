@@ -1,0 +1,92 @@
+body {
+    background-color: white;
+}
+
+.Container {
+    text-align: center;
+    justify-content: center;
+    border: 3px solid whitesmoke;
+    width: 50%;
+    height: 500px;
+    position: relative;
+    left: 260px;
+    top: 20px;
+}
+
+.final {
+    text-align: center;
+    justify-content: center;
+    color: #030303;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.signup {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+}
+
+.footer {
+    color: #030303;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.registration {
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.fullName {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}
+
+.email {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}
+
+.Username {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}
+
+.password {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}
+
+.confirmpassword {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}
+
+.Type {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}
+
+#student {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}
+
+#advisor {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}
+
+#parents {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #030303;
+}

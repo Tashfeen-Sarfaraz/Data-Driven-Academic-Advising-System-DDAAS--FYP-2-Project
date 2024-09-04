@@ -1,0 +1,20 @@
+{% extends 'app/forgetbase.html' %}
+
+{% block title %}
+Forgot Password - Academiccrpro
+{% endblock %}
+
+{% block content %}
+<div class="forget">
+    <div class="end">Forgot Password</div><br>
+    <form id="forgotPasswordForm" method="POST">
+        {% csrf_token %}
+        <div class="gmail mb-3">
+            <label for="email">Email Address</label><br><br>
+            <input type="email" id="email" name="email" required><br><br>
+        </div>
+        <button id="bttn" type="submit" style="width: 220px; color: white; background-color: black;">Send Reset
+            Link</button>
+    </form>
+</div>
+{% endblock %}

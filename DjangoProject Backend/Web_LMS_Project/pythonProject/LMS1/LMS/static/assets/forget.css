@@ -1,0 +1,40 @@
+body {
+    background-color: white;
+}
+
+.end {
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.forget {
+    text-align: center;
+    justify-content: center;
+    border: 3px solid whitesmoke;
+    width: 50%;
+    height: 300px;
+    position: relative;
+    left: 260px;
+    top: 20px;
+}
+
+.gmail {
+    color: #030303;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    justify-content: center;
+}
+
+#foot {
+    color: #030303;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    justify-content: center;
+}
+
+#bttn {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+}

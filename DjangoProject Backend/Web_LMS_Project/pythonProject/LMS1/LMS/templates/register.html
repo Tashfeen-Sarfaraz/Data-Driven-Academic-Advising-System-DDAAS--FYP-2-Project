@@ -1,0 +1,53 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+Registration - Academiccrpro
+{% endblock %}
+
+{% block content %}
+<div class="Container mt-5">
+    <div class="registration">Sign Up</div><br>
+    <form id="registrationForm" method="POST">
+        {% csrf_token %}
+        <div class="fullName mb-3">
+            <label for="id_fullName">Full Name</label><br>
+            <input type="text" id="id_fullName" name="fullName" required>
+        </div>
+        <div class="email mb-3">
+            <label for="id_email">Email</label><br>
+            <input type="email" id="id_email" name="email" required>
+        </div>
+        <div class="Username mb-3">
+            <label for="id_username">Username</label><br>
+            <input type="text" id="id_username" name="username" required>
+        </div>
+        <div class="password mb-3">
+            <label for="id_password">Password</label><br>
+            <input type="password" id="id_password" name="password" required>
+        </div>
+        <div class="confirmpassword mb-3">
+            <label for="id_confirmPassword">Confirm Password</label><br>
+            <input type="password" id="id_confirmPassword" name="confirmPassword" required>
+        </div>
+        <div class="Type mb-3">
+            <label for="User-Type">User Type</label><br>
+            <label for="student">Student</label>
+            <input type="radio" id="student" value="student" name="userType">
+            <label for="advisor">Advisor</label>
+            <input type="radio" id="advisor" value="advisor" name="userType">
+            <label for="parents">Parent</label>
+            <input type="radio" id="parents" value="parents" name="userType">
+        </div><br>
+        <div class="signup">
+            <button type="submit" style="width: 220px; color: white; background-color: black;">Sign Up</button>
+        </div>
+    </form>
+</div><br><br>
+
+<div class="final">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'settings' %}">Settings</a>
+    <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+    <hr>
+</div>
+{% endblock %}

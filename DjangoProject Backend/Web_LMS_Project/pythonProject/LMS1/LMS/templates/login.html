@@ -1,0 +1,36 @@
+{% extends 'app/loginbase.html' %}
+
+{% block title %}
+Login - Academiccrpro
+{% endblock %}
+
+{% block content %}
+<div class="Container1">
+    <div class="Login">Sign In</div><br>
+    <form id="loginForm" method="POST">
+        {% csrf_token %}
+        <div class="EmailAddress mb-3">
+            <label for="username">Username/Email Address</label><br>
+            <input type="text" id="username" name="username" required>
+        </div><br>
+
+        <div class="Verify mb-3">
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password" required>
+        </div><br>
+
+        <div class="Check mb-3">
+            <label for="remember">Remember Me</label>
+            <input type="checkbox" id="remember" name="remember">
+        </div><br>
+
+        <div class="Forgot mb-3">
+            <a href="{% url 'password_reset' %}">Forgot Password?</a>
+        </div><br>
+
+        <div class="log">
+            <button type="submit" style="width: 220px; color: white; background-color: black;">Login</button><br>
+        </div>
+    </form>
+</div>
+{% endblock %}
